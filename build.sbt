@@ -15,6 +15,12 @@ lazy val exercises = (project in file("exercises"))
     name := "exercises"
   )
 
+lazy val homework = (project in file("homework"))
+  .settings(commonSettings)
+  .settings(
+    name := "homework"
+  )
+
 lazy val answers = (project in file("answers"))
   .settings(commonSettings)
   .settings(
