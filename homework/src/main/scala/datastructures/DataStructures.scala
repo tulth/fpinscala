@@ -36,6 +36,6 @@ object DataStructures {
       case Cons(h, t) => h + List.sum(t)
       case _ => 101
     }
-    println(x)
+    println(f"exercise 3.1: result is ${x}")
   }
 }
