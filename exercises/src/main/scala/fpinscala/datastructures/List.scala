@@ -50,9 +50,12 @@ object List { // `List` companion object. Contains functions for creating and wo
     foldRight(ns, 1.0)(_ * _) // `_ * _` is more concise notation for `(x,y) => x * y`; see sidebar
 
 
-  def tail[A](l: List[A]): List[A] = ???
+  def tail[A](l: List[A]): List[A] = l match {
+      case Nil => Nil
+      case Cons(x, xs) => xs
+  }
 
-  def setHead[A](l: List[A], h: A): List[A] = ???
+  def setHead[A](l: List[A], h: A): List[A] = Cons(h, tail(l))
 
   def drop[A](l: List[A], n: Int): List[A] = ???
 
@@ -65,4 +68,12 @@ object List { // `List` companion object. Contains functions for creating and wo
   def foldLeft[A,B](l: List[A], z: B)(f: (B, A) => B): B = ???
 
   def map[A,B](l: List[A])(f: A => B): List[B] = ???
+
+  def main(args: Array[String]): Unit = {
+    println("Data Structures List!")
+    val l0 = List(1,2,3)
+    println(f"ex3.2 l0: $l0 tail(l0): ${tail(l0)}")
+    println(f"ex3.3 l0: $l0 setHead(l0, 0): ${setHead(l0, 0)}")
+
+  }
 }
