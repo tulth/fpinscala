@@ -37,6 +37,13 @@ object List { // `List` companion object. Contains functions for creating and wo
       case Cons(h,t) => Cons(h, append(t, a2))
     }
 
+  def appendUsingFoldLeft[A](a1: List[A], a2: List[A]): List[A] =
+    // foldRight(a1, a2)(Cons(_,_))
+    foldLeft(reverse(a1), a2)((as, a) => Cons(a, as))
+  
+  def concat[A](ls: List[List[A]]): List[A] =
+    foldRightUsingFoldLeft(ls, Nil:List[A])(append(_,_))
+  
   def foldRight[A,B](as: List[A], z: B)(f: (A, B) => B): B = // Utility functions
     as match {
       case Nil => z
@@ -131,7 +138,14 @@ object List { // `List` companion object. Contains functions for creating and wo
     println(f"ex3.10 sum2(l0): ${sum2(l0)} sum2(l1): ${sum2(l1)} sum3(l0): ${sum3(l0)} sum3(l1): ${sum3(l1)}")
     println(f"ex3.10 product2(l2): ${product2(l2)} product3(l2): ${product3(l2)}")
     println(f"ex3.10 length(l0): ${length(l0)} length(l1): ${length(l1)} length2(l0): ${length2(l0)} length2(l1): ${length2(l1)}")
-    println(f"ex3.12, reverse reverse(l0): ${reverse(l0)} reverse(l1): ${reverse(l1)}")
-    println(f"ex3.13, see above, used reverse")
+    println(f"ex3.12 reverse(l0): ${reverse(l0)} reverse(l1): ${reverse(l1)}")
+    println(f"ex3.13 see above, used reverse")
+    println(f"ex3.14 append(l0, l1):              ${append(l0, l1)}")
+    println(f"ex3.14 appendUsingFoldLeft(l0, l1): ${appendUsingFoldLeft(l0, l1)}")
+    println(f"ex3.14 append(l1, l0):              ${append(l1, l0)}")
+    println(f"ex3.14 appendUsingFoldLeft(l1, l0): ${appendUsingFoldLeft(l1, l0)}")
+    val ls0 = List(l0, l1, List(9,7,8))
+    println(f"ls0: $ls0")
+    println(f"ex3.14 concat(ls0): ${concat(ls0)}")
   }
 }
