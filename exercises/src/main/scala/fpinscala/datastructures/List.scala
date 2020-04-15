@@ -43,6 +43,29 @@ object List { // `List` companion object. Contains functions for creating and wo
       case Cons(x, xs) => f(x, foldRight(xs, z)(f))
     }
 
+  @annotation.tailrec
+  def foldLeft[A,B](l: List[A], z: B)(f: (B, A) => B): B = l match {
+    case Nil => z
+    case Cons(a, as) =>
+      foldLeft(as, f(z, a))(f)
+  }
+
+  def reverse[A](l: List[A]): List[A] =
+    foldLeft(l, Nil:List[A])((as: List[A], a:A) => Cons(a,as))
+
+
+  def foldLeftUsingFoldRight[A,B](l: List[A], z: B)(f: (B, A) => B): B =
+    foldRight(reverse(l), z)((b, a) => f(a,b)) // book answer said this was cheating
+
+  def foldRightUsingFoldLeft[A,B](l: List[A], z: B)(f: (A, B) => B): B =
+    foldLeft(reverse(l), z)((a, b) => f(b,a))
+  
+  def sum3(ns: List[Int]) =
+    foldLeft(ns, 0)((x,y) => x + y)
+
+  def product3(ns: List[Double]) =
+    foldLeft(ns, 1.0)(_ * _) // `_ * _` is more concise notation for `(x,y) => x * y`; see sidebar
+  
   def sum2(ns: List[Int]) =
     foldRight(ns, 0)((x,y) => x + y)
 
@@ -81,9 +104,10 @@ object List { // `List` companion object. Contains functions for creating and wo
 
   def length[A](l: List[A]): Int =
     foldRight(l, 0)((_, x:Int)=>1+x)
-
-  def foldLeft[A,B](l: List[A], z: B)(f: (B, A) => B): B = ???
-
+  
+  def length2[A](l: List[A]): Int =
+    foldLeft(l, 0)((x:Int, _)=>1+x)
+  
   def map[A,B](l: List[A])(f: A => B): List[B] = ???
 
   def main(args: Array[String]): Unit = {
@@ -103,6 +127,11 @@ object List { // `List` companion object. Contains functions for creating and wo
     // This suggests data constructors are an application of foldRight
     println(f"ex3.8 foldRight(List(1,2,3), Nil:List[Int])(Cons(_,_)) = List(1,2,3) = ${foldRight(List(1,2,3), Nil:List[Int])(Cons(_,_))}")
     println(f"ex3.9 length(l0): ${length(l0)} length(l1): ${length(l1)}")
-
+    val l2 = List(1.1,2.2,3.3,7.7,5.5,6.6)
+    println(f"ex3.10 sum2(l0): ${sum2(l0)} sum2(l1): ${sum2(l1)} sum3(l0): ${sum3(l0)} sum3(l1): ${sum3(l1)}")
+    println(f"ex3.10 product2(l2): ${product2(l2)} product3(l2): ${product3(l2)}")
+    println(f"ex3.10 length(l0): ${length(l0)} length(l1): ${length(l1)} length2(l0): ${length2(l0)} length2(l1): ${length2(l1)}")
+    println(f"ex3.12, reverse reverse(l0): ${reverse(l0)} reverse(l1): ${reverse(l1)}")
+    println(f"ex3.13, see above, used reverse")
   }
 }
