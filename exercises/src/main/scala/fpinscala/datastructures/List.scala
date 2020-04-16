@@ -115,8 +115,25 @@ object List { // `List` companion object. Contains functions for creating and wo
   def length2[A](l: List[A]): Int =
     foldLeft(l, 0)((x:Int, _)=>1+x)
   
-  def map[A,B](l: List[A])(f: A => B): List[B] = ???
+  def add1(l: List[Int]): List[Int] =
+    foldRightUsingFoldLeft(l, Nil:List[Int])((a, as)=>Cons(a+1,as))
 
+  def doublesToStrings(l: List[Double]): List[String] =
+    foldRightUsingFoldLeft(l, Nil:List[String])((a, as)=>Cons(a.toString,as))
+
+  def map[A,B](l: List[A])(f: A => B): List[B] =
+    foldRightUsingFoldLeft(l, Nil:List[B])((a, as)=>Cons(f(a),as))
+
+  def filter[A](l: List[A])(f: A => Boolean): List[A] =
+    foldRightUsingFoldLeft(l, Nil:List[A])((a, as) =>
+      if (f(a)) Cons(a,as)
+      else as
+    )
+
+  def flatMap[A,B](l: List[A])(f: A => List[B]): List[B] =
+    foldRightUsingFoldLeft(l, Nil:List[B])((a, as)=>append(f(a),as))
+
+  
   def main(args: Array[String]): Unit = {
     println("Data Structures List!")
     val l0 = List(1,2,3)
@@ -146,6 +163,13 @@ object List { // `List` companion object. Contains functions for creating and wo
     println(f"ex3.14 appendUsingFoldLeft(l1, l0): ${appendUsingFoldLeft(l1, l0)}")
     val ls0 = List(l0, l1, List(9,7,8))
     println(f"ls0: $ls0")
-    println(f"ex3.14 concat(ls0): ${concat(ls0)}")
+    println(f"ex3.15 concat(ls0): ${concat(ls0)}")
+    println(f"ex3.16 add1(l1): ${add1(l1)}")
+    println(f"ex3.17 doublesToStrings(l2): ${doublesToStrings(l2)}")
+    println(f"ex3.18 map(l2)(_ / 2): ${map(l2)(_ / 1.1)}")
+    def is_even(x:Int): Boolean = x % 2 == 0
+    println(f"ex3.19 filter(l1)(is_even): ${filter(l1)(is_even)}")
+    println(f"ex3.20 flatMap(List(1,2,3))(i => List(i,i)): ${flatMap(List(1,2,3))(i => List(i,i))}")
+    
   }
 }
